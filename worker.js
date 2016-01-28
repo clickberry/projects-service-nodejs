@@ -64,8 +64,8 @@ bus.on('account-create', function (e) {
             created: moment.utc()
         });
 
-        sampleProject.save(function(err){
-            if(err){
+        sampleProject.save(function (err) {
+            if (err) {
                 debug(err);
                 return e.message.requeue(30);
             }
@@ -75,12 +75,12 @@ bus.on('account-create', function (e) {
     });
 });
 
-bus.on('account-merge', function(e){
-    var toUser= e.account.toUserId;
-    var fromUserId= e.account.fromUserId;
+bus.on('account-merge', function (e) {
+    var toUserId = e.account.toUserId;
+    var fromUserId = e.account.fromUserId;
 
-    Project.update({userId: fromUserId}, {userId: toUserId}, {multi: true}, function(err){
-        if(err){
+    Project.update({userId: fromUserId}, {userId: toUserId}, {multi: true}, function (err) {
+        if (err) {
             return e.message.requeue(30);
         }
 
