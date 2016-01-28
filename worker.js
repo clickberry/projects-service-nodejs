@@ -51,7 +51,7 @@ bus.on('account-create', function (e) {
     var isHidden = config.getBool('sample:hidden', true);
     var userId = e.userId;
 
-    if(!sampleProjectId){
+    if (!sampleProjectId) {
         debug('Sample Project ID is not set.');
         return e.message.finish();
     }
@@ -60,6 +60,11 @@ bus.on('account-create', function (e) {
         if (err) {
             debug(err);
             return e.message.requeue(30);
+        }
+
+        if (!project) {
+            debug('Sample Project not found.');
+            return e.message.finish();
         }
 
         var sampleProject = new Project({

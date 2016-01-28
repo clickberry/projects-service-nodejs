@@ -1,7 +1,7 @@
 {
   "name": "clickberry-projects-service",
-  "version": "0.2.4",
-  "main": "app.js",
+  "version": "0.2.5",
+  "main": "worker.js",
   "description": "Projects worker micro-service on Node.js",
   "scripts": {
     "start": "node ./worker",

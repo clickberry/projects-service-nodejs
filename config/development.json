@@ -4,5 +4,8 @@
   },
   "nsqlookupd": {
     "addresses": "192.168.99.100:4161"
+  },
+  "sample":{
+    "projectid": "56aa4524de9e523c21b4205d"
   }
 }
