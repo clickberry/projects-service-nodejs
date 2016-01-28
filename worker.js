@@ -27,7 +27,7 @@ bus.on('project-delete', function (e) {
     Project.remove({_id: e.projectId}, function (err) {
         if (err) {
             debug(err);
-            return e.message.requeue();
+            return e.message.requeue(30);
         }
 
         e.message.finish();
@@ -38,7 +38,7 @@ bus.on('account-delete', function (e) {
     Project.remove({userId: e.userId}, function (err) {
         if (err) {
             debug(err);
-            return e.message.requeue();
+            return e.message.requeue(30);
         }
 
         e.message.finish();
@@ -67,11 +67,24 @@ bus.on('account-create', function (e) {
         sampleProject.save(function(err){
             if(err){
                 debug(err);
-                return e.message.requeue();
+                return e.message.requeue(30);
             }
 
             e.message.finish();
-        })
+        });
+    });
+});
+
+bus.on('account-merge', function(e){
+    var toUser= e.account.toUserId;
+    var fromUserId= e.account.fromUserId;
+
+    Project.update({userId: fromUserId}, {userId: toUserId}, {multi: true}, function(err){
+        if(err){
+            return e.message.requeue(30);
+        }
+
+        e.message.finish();
     });
 });
 
