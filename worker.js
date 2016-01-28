@@ -52,11 +52,16 @@ bus.on('account-create', function (e) {
     var userId = e.userId;
 
     if(!sampleProjectId){
-        debug('Sample Project ID is not set.')
+        debug('Sample Project ID is not set.');
         return e.message.finish();
     }
 
-    Project.findById(sampleProjectId, function (project) {
+    Project.findById(sampleProjectId, function (err, project) {
+        if (err) {
+            debug(err);
+            return e.message.requeue(30);
+        }
+
         var sampleProject = new Project({
             userId: userId,
             name: project.name,
