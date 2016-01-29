@@ -24,7 +24,7 @@ var options = {
 mongoose.connect(config.get('mongodb:connection'), options);
 
 bus.on('project-delete', function (e) {
-    Project.remove({_id: e.projectId}, function (err) {
+    Project.remove({_id: e.project.projectId}, function (err) {
         if (err) {
             debug(err);
             return e.message.requeue(30);
@@ -35,7 +35,7 @@ bus.on('project-delete', function (e) {
 });
 
 bus.on('account-delete', function (e) {
-    Project.remove({userId: e.userId}, function (err) {
+    Project.remove({userId: e.account.userId}, function (err) {
         if (err) {
             debug(err);
             return e.message.requeue(30);
@@ -49,7 +49,7 @@ bus.on('account-create', function (e) {
     var sampleProjectId = config.get('sample:projectid');
     var isPrivate = config.getBool('sample:private', false);
     var isHidden = config.getBool('sample:hidden', true);
-    var userId = e.userId;
+    var userId = e.account.userId;
 
     if (!sampleProjectId) {
         debug('Sample Project ID is not set.');
