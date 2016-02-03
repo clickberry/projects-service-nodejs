@@ -5,7 +5,10 @@ var config = require('clickberry-config');
 var Bus = require('./lib/bus-service');
 var Project = require('./models/projects');
 
-var bus = new Bus({addresses: config.get('nsqlookupd:addresses').split(',')});
+var bus = new Bus({
+    lookupdHTTPAddresses: config.get('nsqlookupd:addresses').split(','),
+    maxAttempts: 5
+});
 
 var options = {
     server: {
@@ -24,6 +27,7 @@ var options = {
 mongoose.connect(config.get('mongodb:connection'), options);
 
 bus.on('project-delete', function (e) {
+    debug(e.project.id);
     Project.remove({_id: e.project.id}, function (err) {
         if (err) {
             debug(err);
