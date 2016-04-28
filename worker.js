@@ -73,6 +73,7 @@ bus.on('account-create', function (e) {
 
         var sampleProject = new Project({
             userId: userId,
+            videoId: project.videoId,
             name: project.name,
             nameSort: project.name && project.name.toLowerCase(),
             description: project.description,
@@ -80,7 +81,9 @@ bus.on('account-create', function (e) {
             isPrivate: isPrivate,
             isHidden: isHidden,
             videos: project.videos,
-            created: moment.utc()
+            created: moment.utc(),
+            viewsCounter: {id: 'views', name: 'Views counter'},
+            resharesCounter: {id: 'reshares', name: 'Reshares counter'}
         });
 
         sampleProject.save(function (err) {
